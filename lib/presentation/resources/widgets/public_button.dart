@@ -35,7 +35,11 @@ class PublicButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: useTitleWidget
               ? titleWidget
-              : Text(title, style: Theme.of(context).textTheme.titleLarge),
+              : Text(title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: AppColors.white)),
         ),
       ),
     );

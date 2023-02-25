@@ -53,7 +53,7 @@ class _PublicTextFormFieldState extends State<PublicTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    log('the widget text field is rebuilt');
+    // log('the widget text field is rebuilt');
     return TextFormField(
       textCapitalization: TextCapitalization.sentences,
       maxLines: 1,

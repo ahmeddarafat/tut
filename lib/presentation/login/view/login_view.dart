@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tut/presentation/resources/constants/app_strings.dart';
 import '../../resources/widgets/public_button.dart';
+import '../../resources/widgets/public_text.dart';
 import '../viewmodel/login_viewmodel.dart';
 import '../../resources/constants/app_assets.dart';
 import '../../resources/constants/app_values.dart';
 import '../../resources/styles/app_colors.dart';
 import '../../resources/widgets/Public_text_form_field.dart';
+import 'package:tut/app/di.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,7 +21,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+  final LoginViewModel _viewModel = getIt<LoginViewModel>();
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,13 +36,21 @@ class _LoginPageState extends State<LoginPage> {
     _userNameController
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
-        .addListener(() => _viewModel.setUserName(_passwordController.text));
+        .addListener(() => _viewModel.setPassword(_passwordController.text));
   }
 
   @override
   void initState() {
     super.initState();
     _bind();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    _userNameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,56 +64,90 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppPading.p24),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    AppAssets.splashLogo,
-                    height: 200.h,
-                  ),
-                  StreamBuilder<bool>(
-                      stream: _viewModel.isUserNameValidOutputs,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      AppAssets.splashLogo,
+                      height: 200.h,
+                    ),
+                    StreamBuilder<bool>(
+                        stream: _viewModel.isUserNameValidOutput,
+                        builder: (context, snapshot) {
+                          return PublicTextFormField(
+                            hint: AppStrings.userName,
+                            keyboardtype: TextInputType.emailAddress,
+                            borderRadius: 12,
+                            controller: _userNameController,
+                            validator: (_) => snapshot.data ?? true
+                                ? null
+                                : AppStrings.userNameError,
+                          );
+                        }),
+                    const SizedBox(
+                      height: AppSize.s20,
+                    ),
+                    StreamBuilder<bool>(
+                        stream: _viewModel.isPasswordValidOutput,
+                        builder: (context, snapshot) {
+                          return PublicTextFormField(
+                            hint: AppStrings.password,
+                            controller: _passwordController,
+                            keyboardtype: TextInputType.visiblePassword,
+                            isPassword: true,
+                            showSuffixIcon: true,
+                            borderRadius: 12,
+                            validator: (_) => snapshot.data ?? true
+                                ? null
+                                : AppStrings.passwordError,
+                          );
+                        }),
+                    const SizedBox(height: AppSize.s20),
+                    StreamBuilder<bool>(
+                      stream: _viewModel.areAllInputsValidOutput,
                       builder: (context, snapshot) {
-                        return PublicTextFormField(
-                          hint: AppStrings.userName,
-                          keyboardtype: TextInputType.emailAddress,
-                          borderRadius: 12,
-                          controller: _userNameController,
-                          validator: (_) => snapshot.data ?? true
-                              ? null
-                              : AppStrings.userNameError,
+                        log(snapshot.data.toString());
+                        return PublicButton(
+                          title: AppStrings.login,
+                          onPressed: (snapshot.data ?? false)
+                              ? () {
+                                  _viewModel.login();
+                                }
+                              : null,
                         );
-                      }),
-                  const SizedBox(
-                    height: AppSize.s20,
-                  ),
-                  StreamBuilder<bool>(
-                      stream: _viewModel.isPasswordValidOutputs,
-                      builder: (context, snapshot) {
-                        return PublicTextFormField(
-                          hint: AppStrings.password,
-                          controller: _passwordController,
-                          keyboardtype: TextInputType.visiblePassword,
-                          isPassword: true,
-                          validator: (_) => snapshot.data ?? true
-                              ? null
-                              : AppStrings.passwordError,
-                        );
-                      }),
-                  const SizedBox(
-                    height: AppSize.s20,
-                  ),
-                  PublicButton(
-                    title: AppStrings.login,
-                    onPressed: () {
-                      _viewModel.login();
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                    const SizedBox(height: AppSize.s10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: const PublicText(
+                            txt: AppStrings.forgetPassword,
+                            color: AppColors.orange,
+                            size: 14,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: const PublicText(
+                            txt: AppStrings.notMemeberSignUp,
+                            color: AppColors.orange,
+                            size: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.s100),
+                  ],
+                ),
               ),
             ),
           ),
@@ -109,12 +155,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _viewModel.dispose();
-  //   _userNameController.dispose();
-  //   _passwordController.dispose();
-  //   super.dispose();
-  // }
 }

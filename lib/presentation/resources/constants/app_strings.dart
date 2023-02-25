@@ -20,4 +20,11 @@ class AppStrings {
   static const String password = "Password";
   static const String userNameError = "please, enter your user name";
   static const String passwordError = "please, enter your password";
+  static const String forgetPassword = "Forget Password";
+  static const String notMemeberSignUp = "Not Member? Sign Up";
+
+  /// state renderer
+  static const String loading = "Loading...";
+  static const String tryAgain = "Try Again";
+  static const String ok = "Ok";
 }

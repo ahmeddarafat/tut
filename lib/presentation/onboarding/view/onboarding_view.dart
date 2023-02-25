@@ -23,10 +23,14 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
   final PageController _pageController = PageController();
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
 
+  void _bind(){
+    _viewModel.start();
+  }
+
   @override
   void initState() {
     super.initState();
-    _viewModel.start();
+    _bind();
   }
 
   @override

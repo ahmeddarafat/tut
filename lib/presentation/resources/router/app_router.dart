@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tut/app/di.dart';
 import '../../login/view/login_view.dart';
 import '../../onboarding/view/onboarding_view.dart';
 import '../../register/register_page.dart';
@@ -20,6 +21,7 @@ class RouteGenerate {
       case AppRoutes.onBoarding:
         return MaterialPageRoute(builder: (_) => const OnBoardingLayouts());
       case AppRoutes.login:
+        initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case AppRoutes.register:
         return MaterialPageRoute(builder: (_) => const RegisterPage());

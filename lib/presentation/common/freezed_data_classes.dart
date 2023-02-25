@@ -15,7 +15,7 @@ class LoginObject with _$LoginObject {
 
 // draft
 
-//// freezed & build_runner
+// freezed & build_runner
 // [1] Function:
 //           - These 2 packages works togather to ...
 // [2] Installing:

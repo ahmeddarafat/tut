@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // constants for this file
 const String contentType = "content-type";
@@ -13,13 +12,13 @@ const String authorization = "authorization";
 const String defaultLanguage = "language";
 
 class DioFactory {
-
   final AppPrefs _appPrefs;
   DioFactory(this._appPrefs);
-  
+
   late Dio _dio;
 
   Future<Dio> getDio() async {
+    _dio = Dio();
     String language = _appPrefs.getAppLanguage();
     Map<String, String> headers = {
       contentType: applicationJson,

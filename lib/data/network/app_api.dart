@@ -28,7 +28,7 @@ abstract class AppServiceClient {
 // notes:   "write here the darft of summay and when finishing, move to notion "
 
 // retrofit & retrofit_generator & build_runner 
-// [1] these 3 packages work together to Define and Generate your API
+// [1] these 3 packages work together to Define and Generate your API 
 //       - extremely need additional packages : json_serializable  & json_annotation 
 // [2] at pubspec.yaml file
 //      dependencies:

@@ -10,13 +10,14 @@ import '../../../domain/usecase/login_usecase.dart';
 import '../../base/base_view_model.dart';
 
 class LoginViewModel extends BaseViewModel
-    with LoginViewModelInput, LoginViewModelOutput {
-
+    with LoginViewModelInputs, LoginViewModelOutputs {
   // broadcast means that this stream has multiLetsiner
-  final StreamController userNameStreamController =
+  final StreamController<String> _userNameStreamController =
       StreamController<String>.broadcast();
-  final StreamController passwordStreamController =
+  final StreamController<String> _passwordStreamController =
       StreamController<String>.broadcast();
+  final StreamController<void> _areAllInputsValidStreamController =
+      StreamController<void>.broadcast();
 
   LoginObject loginObject = LoginObject("", "");
 
@@ -33,26 +34,32 @@ class LoginViewModel extends BaseViewModel
 
   @override
   void dispose() {
-    userNameStreamController.close();
-    passwordStreamController.close();
+    _userNameStreamController.close();
+    _passwordStreamController.close();
+    _areAllInputsValidStreamController.close();
   }
 
   @override
-  Sink get userNameInputs => userNameStreamController.sink;
+  Sink get userNameInput => _userNameStreamController.sink;
 
   @override
-  Sink get passwordInputs => passwordStreamController.sink;
+  Sink get passwordInputs => _passwordStreamController.sink;
+
+  @override
+  Sink get areAllInputsValidInput => _areAllInputsValidStreamController.sink;
 
   @override
   setUserName(String userName) {
-    userNameInputs.add(userName);
+    userNameInput.add(userName);
     loginObject = loginObject.copyWith(userName: userName);
+    areAllInputsValidInput.add(null);
   }
 
   @override
   setPassword(String password) {
     passwordInputs.add(password);
     loginObject = loginObject.copyWith(password: password);
+    areAllInputsValidInput.add(null);
   }
 
   @override
@@ -74,24 +81,32 @@ class LoginViewModel extends BaseViewModel
   //* Outputs
 
   @override
-  Stream<bool> get isUserNameValidOutputs =>
-      userNameStreamController.stream.map(isUserNameValid);
+  Stream<bool> get isUserNameValidOutput =>
+      _userNameStreamController.stream.map(_isUserNameValid);
 
   @override
-  Stream<bool> get isPasswordValidOutputs =>
-      passwordStreamController.stream.map(isPasswordValid);
+  Stream<bool> get isPasswordValidOutput =>
+      _passwordStreamController.stream.map(_isPasswordValid);
+  @override
+  Stream<bool> get areAllInputsValidOutput =>
+      _areAllInputsValidStreamController.stream.map((_) => _areAllInputsValid());
 
   /// userName & password are String but I use dynamic to make methods valid for map method of stream
-  bool isUserNameValid(dynamic userName) {
+  bool _isUserNameValid(String userName) {
     return userName.isNotEmpty;
   }
 
-  bool isPasswordValid(dynamic password) {
+  bool _isPasswordValid(String password) {
     return password.isNotEmpty;
+  }
+
+  bool _areAllInputsValid() {
+    return _isUserNameValid(loginObject.userName) ||
+        _isPasswordValid(loginObject.password);
   }
 }
 
-abstract class LoginViewModelInput {
+abstract class LoginViewModelInputs {
 // those inputs (things that user gives them to you) that you will apply at login view (page)
   setUserName(String userName);
   setPassword(String password);
@@ -102,12 +117,14 @@ abstract class LoginViewModelInput {
 // the inputs that is responsible for giving the outputs
 // Sink is the pipe that you give an input (stream of inputs) from side
 // then, you can listen from another side
-  Sink get userNameInputs;
+  Sink get userNameInput;
   Sink get passwordInputs;
+  Sink get areAllInputsValidInput;
 }
 
-abstract class LoginViewModelOutput {
+abstract class LoginViewModelOutputs {
   // those outputs (things that you gives them to user) that you will appear at login view
-  Stream<bool> get isUserNameValidOutputs;
-  Stream<bool> get isPasswordValidOutputs;
+  Stream<bool> get isUserNameValidOutput;
+  Stream<bool> get isPasswordValidOutput;
+  Stream<bool> get areAllInputsValidOutput;
 }

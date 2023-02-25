@@ -31,7 +31,6 @@ class AuthentecationResponse extends BaseResponse {
   // when you generate the file, now you have auto fromJson & toJson methods
   // called _$NameFromJson  & _$NameToJson 
   // you just need to pass them 
-
   factory AuthentecationResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthentecationResponseFromJson(json);
 

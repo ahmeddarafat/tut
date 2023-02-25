@@ -86,7 +86,7 @@ class AppTheme {
         ),
       ),
 
-      // input Decoration Theme
+      /// input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.all(AppSize.s8),
         hintStyle: AppStyle.getRegular(
@@ -94,7 +94,7 @@ class AppTheme {
         labelStyle: AppStyle.getMedium(
             color: AppColors.orange, fontSize: AppFontSize.f14),
 
-        // enabled border
+        /// enabled border
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
           borderSide:
