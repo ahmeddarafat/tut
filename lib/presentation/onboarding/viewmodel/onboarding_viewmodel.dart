@@ -9,7 +9,8 @@ import '../../resources/constants/app_values.dart';
 
 class OnBoardingViewModel extends BaseViewModel
     with OnBoardingViewModelInputs, OnBoardingViewModelOutputs {
-  final StreamController _streamController = StreamController<SliderViewObject>();
+  final StreamController _streamController =
+      StreamController<SliderViewObject>();
 
   late List<SliderObject> _list;
   int _currentIndex = 0;
@@ -24,15 +25,15 @@ class OnBoardingViewModel extends BaseViewModel
 
   @override
   int goNext() {
-    if(_currentIndex <_list.length-1){
+    if (_currentIndex < _list.length - 1) {
       _currentIndex++;
     }
-    return 
-    _currentIndex;
+    return _currentIndex;
   }
+
   @override
   int goPrevious() {
-    if(_currentIndex > 0){
+    if (_currentIndex > 0) {
       _currentIndex--;
     }
     return _currentIndex;
@@ -64,28 +65,28 @@ class OnBoardingViewModel extends BaseViewModel
         SliderObject(
           AppStrings.onBoardingTitle1,
           AppStrings.onBoardingSubtitle1,
-          AppAssets.onBoardingLogo1,
+          AppImages.onBoardingLogo1,
           AppSize.s267,
           AppSize.s267,
         ),
         SliderObject(
           AppStrings.onBoardingTitle2,
           AppStrings.onBoardingSubtitle2,
-          AppAssets.onBoardingLogo2,
+          AppImages.onBoardingLogo2,
           AppSize.s326,
           AppSize.s326,
         ),
         SliderObject(
           AppStrings.onBoardingTitle3,
           AppStrings.onBoardingSubtitle3,
-          AppAssets.onBoardingLogo3,
+          AppImages.onBoardingLogo3,
           AppSize.s287,
           AppSize.s287,
         ),
         SliderObject(
           AppStrings.onBoardingTitle4,
           AppStrings.onBoardingSubtitle4,
-          AppAssets.onBoardingLogo4,
+          AppImages.onBoardingLogo4,
           AppSize.s356,
           AppSize.s356,
         ),
@@ -94,6 +95,7 @@ class OnBoardingViewModel extends BaseViewModel
   @override
   void dispose() {
     _streamController.close();
+    super.dispose();
   }
 }
 

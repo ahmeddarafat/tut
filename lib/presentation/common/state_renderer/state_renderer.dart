@@ -1,5 +1,7 @@
 // To show the states of views while changing (loaing, error, data, etc..)
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:tut/presentation/resources/constants/app_assets.dart';
 import 'package:tut/presentation/resources/constants/app_strings.dart';
 import 'package:tut/presentation/resources/constants/app_values.dart';
 import 'package:tut/presentation/resources/styles/app_colors.dart';
@@ -45,6 +47,7 @@ class StateRenderer extends StatelessWidget {
           item: RugularItems(
             mainAxisSize: MainAxisSize.min,
             message: AppStrings.loading,
+            json: AppJsons.loading,
           ),
         );
       case StateRendererType.popUpErrorState:
@@ -58,6 +61,7 @@ class StateRenderer extends StatelessWidget {
       case StateRendererType.fullScreenLoadingState:
         return const RugularItems(
           message: AppStrings.loading,
+          json: AppJsons.loading,
         );
       case StateRendererType.fullScreenErrorState:
         return ErrorItems(
@@ -69,6 +73,7 @@ class StateRenderer extends StatelessWidget {
         return const RugularItems(
           mainAxisSize: MainAxisSize.min,
           message: AppStrings.loading,
+          json: AppJsons.empty,
         );
       case StateRendererType.contentState:
         return Container();
@@ -119,33 +124,39 @@ class ErrorItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: mainAxisSize,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: AppSize.s100,
-          width: AppSize.s100,
-          child: Container(), // TODO: add image
-        ),
-        PublicText(
-          txt: message,
-          color: AppColors.black,
-          size: 20,
-        ),
-        PublicButton(
-          onPressed: () {
-            if (type == StateRendererType.fullScreenErrorState) {
-              retryActionFunction!.call();
-            } else {
-              Navigator.pop(context);
-            }
-          },
-          title: type == StateRendererType.fullScreenErrorState
-              ? AppStrings.tryAgain
-              : AppStrings.ok,
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 16),
+      child: Column(
+        mainAxisSize: mainAxisSize,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: AppSize.s100,
+            width: AppSize.s100,
+            child: Lottie.asset(AppJsons.error), 
+          ),
+          const SizedBox(height: 10),
+          PublicText(
+            txt: message,
+            color: AppColors.black,
+            size: 20,
+          ),
+          const SizedBox(height: 15),
+          PublicButton(
+            width: 200,
+            onPressed: () {
+              if (type == StateRendererType.fullScreenErrorState) {
+                retryActionFunction!.call();
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            title: type == StateRendererType.fullScreenErrorState
+                ? AppStrings.tryAgain
+                : AppStrings.ok,
+          )
+        ],
+      ),
     );
   }
 }
@@ -153,10 +164,12 @@ class ErrorItems extends StatelessWidget {
 class RugularItems extends StatelessWidget {
   final MainAxisSize mainAxisSize;
   final String message;
+  final String json;
   const RugularItems({
     super.key,
     this.mainAxisSize = MainAxisSize.max,
     required this.message,
+    required this.json,
   });
 
   @override
@@ -168,8 +181,9 @@ class RugularItems extends StatelessWidget {
         SizedBox(
           height: AppSize.s100,
           width: AppSize.s100,
-          child: Container(), // TODO: add animated json
+          child: Lottie.asset(json), 
         ),
+        const SizedBox(height: 10),
         PublicText(
           txt: message,
           color: AppColors.black,
@@ -180,8 +194,3 @@ class RugularItems extends StatelessWidget {
   }
 }
 
-
-/// TODO: lec 93 
-/// - flutter pub get lottie package
-/// - download 3 json files (loading, empty, error) lottiefiles site
-/// - instead of image.asset ==> lottie.asset(fileName.json)

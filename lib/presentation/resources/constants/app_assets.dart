@@ -1,4 +1,4 @@
-class AppAssets {
+class AppImages {
   // base
   static const String _imagePath = "assets/images";
 
@@ -15,4 +15,14 @@ class AppAssets {
   static const String solidCircleIc = "$_imagePath/solid_circle_ic.svg";
   static const String rightArrowIc = "$_imagePath/right_arrow_ic.svg";
   static const String leftArrowIc = "$_imagePath/left_arrow_ic.svg";
+}
+
+class AppJsons{
+    static const String _jsonPath = "assets/json";
+    static const String empty = "$_jsonPath/empty.json";
+    static const String error = "$_jsonPath/error.json";
+    static const String loading = "$_jsonPath/loading.json";
+    static const String success = "$_jsonPath/success.json";
+
+
 }

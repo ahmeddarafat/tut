@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.orange,
-      body: Center(child: Image.asset(AppAssets.splashLogo)),
+      body: Center(child: Image.asset(AppImages.splashLogo)),
     );
   }
 

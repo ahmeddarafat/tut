@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:tut/data/network/dio_factory.dart';
+import 'package:tut/presentation/common/state_renderer/state_renderer.dart';
+import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
+
 import '../../../data/network/failure.dart';
 import 'package:dartz/dartz.dart';
 import '../../../domain/models/models.dart';
@@ -11,6 +15,9 @@ import '../../base/base_view_model.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
+  final LoginUseCase _loginUseCase;
+  LoginViewModel(this._loginUseCase);
+
   // broadcast means that this stream has multiLetsiner
   final StreamController<String> _userNameStreamController =
       StreamController<String>.broadcast();
@@ -18,18 +25,12 @@ class LoginViewModel extends BaseViewModel
       StreamController<String>.broadcast();
   final StreamController<void> _areAllInputsValidStreamController =
       StreamController<void>.broadcast();
-
   LoginObject loginObject = LoginObject("", "");
 
-  final LoginUseCase _loginUseCase;
-
-  LoginViewModel(this._loginUseCase);
-
-  //* Inputs
 
   @override
   void start() {
-    // TODO: implement start
+    stateInput.add(ContentState());
   }
 
   @override
@@ -37,8 +38,10 @@ class LoginViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _areAllInputsValidStreamController.close();
+    super.dispose();
   }
 
+  //* Inputs
   @override
   Sink get userNameInput => _userNameStreamController.sink;
 
@@ -63,7 +66,10 @@ class LoginViewModel extends BaseViewModel
   }
 
   @override
-  login() async {
+  Future<void> login() async {
+    // To show loading dialog
+    stateInput.add(LoadingState(stateRendererType: StateRendererType.popUpLoadingState));
+
     Either<Failure, AuthenticationModel> either = await _loginUseCase
         .execute(LoginUseCaseInput(loginObject.userName, loginObject.password));
     // TODO: Explanation , Either
@@ -72,9 +78,12 @@ class LoginViewModel extends BaseViewModel
     // [3] B fold<B>(B Function(Failure) ifLeft, B Function(AuthenticationModel) ifRight)
     // [4] B is null until you determine a specific type like this ex: either.fold<boo>()
     either.fold((failure) {
-      log(failure.message);
+      // to show failure dialog
+      stateInput.add(ErrorState(stateRendererType: StateRendererType.popUpErrorState,message: failure.message));
     }, (authenticationModel) {
-      log(authenticationModel.customer?.name ?? "null");
+      // To remove loading dialog
+      stateInput.add(ContentState());
+      // TODO: Navigator to home page
     });
   }
 

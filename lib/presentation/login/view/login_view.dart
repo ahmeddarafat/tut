@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:tut/presentation/resources/constants/app_strings.dart';
 import '../../resources/widgets/public_button.dart';
 import '../../resources/widgets/public_text.dart';
@@ -55,99 +56,113 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _getScaffold();
-  }
-
-  Widget _getScaffold() {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppPading.p24),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      AppAssets.splashLogo,
-                      height: 200.h,
-                    ),
-                    StreamBuilder<bool>(
-                        stream: _viewModel.isUserNameValidOutput,
-                        builder: (context, snapshot) {
-                          return PublicTextFormField(
-                            hint: AppStrings.userName,
-                            keyboardtype: TextInputType.emailAddress,
-                            borderRadius: 12,
-                            controller: _userNameController,
-                            validator: (_) => snapshot.data ?? true
-                                ? null
-                                : AppStrings.userNameError,
-                          );
-                        }),
-                    const SizedBox(
-                      height: AppSize.s20,
-                    ),
-                    StreamBuilder<bool>(
-                        stream: _viewModel.isPasswordValidOutput,
-                        builder: (context, snapshot) {
-                          return PublicTextFormField(
-                            hint: AppStrings.password,
-                            controller: _passwordController,
-                            keyboardtype: TextInputType.visiblePassword,
-                            isPassword: true,
-                            showSuffixIcon: true,
-                            borderRadius: 12,
-                            validator: (_) => snapshot.data ?? true
-                                ? null
-                                : AppStrings.passwordError,
-                          );
-                        }),
-                    const SizedBox(height: AppSize.s20),
-                    StreamBuilder<bool>(
-                      stream: _viewModel.areAllInputsValidOutput,
+      body: StreamBuilder<FlowState>(
+        stream: _viewModel.stateOuput,
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            return snapshot.data!.getScreenWidget(
+              context:context,
+              contentWidget: _getBody(),
+              retryActionFunction: ()=>_viewModel.login()
+            );
+          }else{
+            return _getBody();
+          }
+
+        },
+      ),
+    );
+  }
+
+  Widget _getBody() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(AppPading.p24),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    AppImages.splashLogo,
+                    height: 200.h,
+                  ),
+                  StreamBuilder<bool>(
+                      stream: _viewModel.isUserNameValidOutput,
                       builder: (context, snapshot) {
-                        log(snapshot.data.toString());
-                        return PublicButton(
-                          title: AppStrings.login,
-                          onPressed: (snapshot.data ?? false)
-                              ? () {
-                                  _viewModel.login();
-                                }
-                              : null,
+                        return PublicTextFormField(
+                          hint: AppStrings.userName,
+                          keyboardtype: TextInputType.emailAddress,
+                          borderRadius: 12,
+                          controller: _userNameController,
+                          validator: (_) => snapshot.data ?? true
+                              ? null
+                              : AppStrings.userNameError,
                         );
-                      },
-                    ),
-                    const SizedBox(height: AppSize.s10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: const PublicText(
-                            txt: AppStrings.forgetPassword,
-                            color: AppColors.orange,
-                            size: 14,
-                          ),
+                      }),
+                  const SizedBox(
+                    height: AppSize.s20,
+                  ),
+                  StreamBuilder<bool>(
+                      stream: _viewModel.isPasswordValidOutput,
+                      builder: (context, snapshot) {
+                        return PublicTextFormField(
+                          hint: AppStrings.password,
+                          controller: _passwordController,
+                          keyboardtype: TextInputType.visiblePassword,
+                          isPassword: true,
+                          showSuffixIcon: true,
+                          borderRadius: 12,
+                          validator: (_) => snapshot.data ?? true
+                              ? null
+                              : AppStrings.passwordError,
+                        );
+                      }),
+                  const SizedBox(height: AppSize.s20),
+                  StreamBuilder<bool>(
+                    stream: _viewModel.areAllInputsValidOutput,
+                    builder: (context, snapshot) {
+                      log(snapshot.data.toString());
+                      return PublicButton(
+                        title: AppStrings.login,
+                        onPressed: (snapshot.data ?? false)
+                            ? () {
+                                _viewModel.login();
+                              }
+                            : null,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: AppSize.s10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: const PublicText(
+                          txt: AppStrings.forgetPassword,
+                          color: AppColors.orange,
+                          size: 14,
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: const PublicText(
-                            txt: AppStrings.notMemeberSignUp,
-                            color: AppColors.orange,
-                            size: 14,
-                          ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: const PublicText(
+                          txt: AppStrings.notMemeberSignUp,
+                          color: AppColors.orange,
+                          size: 14,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSize.s100),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSize.s100),
+                ],
               ),
             ),
           ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../viewmodel/onboarding_viewmodel.dart';
@@ -23,7 +22,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
   final PageController _pageController = PageController();
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
 
-  void _bind(){
+  void _bind() {
     _viewModel.start();
   }
 
@@ -38,8 +37,11 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
     return StreamBuilder(
       stream: _viewModel.outputSliderViewObject,
       builder: (context, snapshot) {
-        // TODO: remember to test '!'
-        return _getBuildWidget(snapshot.data!);
+        // TODO: make this delay at splash screen
+        if (snapshot.hasData) {
+          return _getBuildWidget(snapshot.data!);
+        }
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -58,7 +60,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
       ),
       body: SafeArea(
         child: Padding(
-          // TODO: add sizer package
+          // TODO: add screenUtil package
           padding: const EdgeInsets.all(AppPading.p16),
           child: PageView.builder(
             controller: _pageController,
@@ -85,7 +87,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 onPressed: () {
-                 Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+                  Navigator.of(context).pushReplacementNamed(AppRoutes.login);
                 },
               ),
             ),
@@ -102,20 +104,22 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // left arrow
+          /// left arrow
           GestureDetector(
             onTap: () {
-              _pageController.animateToPage(_viewModel.goPrevious(),
-                  duration: const Duration(
-                      milliseconds: AppConstants.sliderAnimationTime),
-                  curve: Curves.easeIn);
+              _pageController.animateToPage(
+                _viewModel.goPrevious(),
+                duration: const Duration(
+                    milliseconds: AppConstants.sliderAnimationTime),
+                curve: Curves.easeIn,
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(AppPading.p16),
               child: SizedBox(
                 height: AppSize.s20,
                 width: AppSize.s20,
-                child: SvgPicture.asset(AppAssets.leftArrowIc),
+                child: SvgPicture.asset(AppImages.leftArrowIc),
               ),
             ),
           ),
@@ -142,7 +146,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
               child: SizedBox(
                 height: AppSize.s20,
                 width: AppSize.s20,
-                child: SvgPicture.asset(AppAssets.rightArrowIc),
+                child: SvgPicture.asset(AppImages.rightArrowIc),
               ),
             ),
           ),
@@ -154,11 +158,11 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
   Widget _getProperCircle(int index, int currentIndex) {
     if (currentIndex == index) {
       return SvgPicture.asset(
-        AppAssets.hollowCircleIc,
+        AppImages.hollowCircleIc,
       );
     }
     return SvgPicture.asset(
-      AppAssets.solidCircleIc,
+      AppImages.solidCircleIc,
     );
   }
 
