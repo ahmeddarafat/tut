@@ -2,18 +2,38 @@ import '../presentation/resources/languages/app_langauges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String prefsKeyLang = "Prefs-Key-Lang";
+const String prefsKeyOnBoarding = "Prefs-Key-onBoarding";
+const String prefsKeyLoggedIn = "Prefs-Key-Logged-In";
 
-class AppPrefs{
+class AppPrefs {
   final SharedPreferences _sharedPreferences;
   AppPrefs(this._sharedPreferences);
 
-  String getAppLanguage(){
+  String getAppLanguage() {
     String? language = _sharedPreferences.getString(prefsKeyLang);
-    if(language !=null && language.isNotEmpty){
+    if (language != null && language.isNotEmpty) {
       return language;
-    }else{
+    } else {
       return AppLanguages.english.getLanguage();
     }
+  }
+
+  //* OnBoarding
+  Future<void> setOnBoardingViewed() async {
+    _sharedPreferences.setBool(prefsKeyOnBoarding, true);
+  }
+
+  bool isOnBoardingViewed() {
+    return _sharedPreferences.getBool(prefsKeyOnBoarding) ?? false;
+  }
+
+  //* LoggedIn
+  Future<void> setUserLoggedIn() async {
+    _sharedPreferences.setBool(prefsKeyLoggedIn, true);
+  }
+
+  bool isUserLoggedIn() {
+    return _sharedPreferences.getBool(prefsKeyLoggedIn) ?? false;
   }
 }
 

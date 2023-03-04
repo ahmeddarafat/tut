@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:tut/presentation/resources/constants/app_strings.dart';
+import 'package:tut/presentation/resources/router/app_router.dart';
 import '../../resources/widgets/public_button.dart';
 import '../../resources/widgets/public_text.dart';
 import '../viewmodel/login_viewmodel.dart';
@@ -38,6 +40,20 @@ class _LoginPageState extends State<LoginPage> {
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
         .addListener(() => _viewModel.setPassword(_passwordController.text));
+
+    // to listen when logged successfully in order to navigate
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isLoggined) {
+      // TODO: need more understand
+      // To can navigate with passing context
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (route) => false,
+        );
+      });
+    });
   }
 
   @override
@@ -61,16 +77,14 @@ class _LoginPageState extends State<LoginPage> {
       body: StreamBuilder<FlowState>(
         stream: _viewModel.stateOuput,
         builder: (context, snapshot) {
-          if(snapshot.hasData){
+          if (snapshot.hasData) {
             return snapshot.data!.getScreenWidget(
-              context:context,
-              contentWidget: _getBody(),
-              retryActionFunction: ()=>_viewModel.login()
-            );
-          }else{
+                context: context,
+                contentWidget: _getBody(),
+                retryActionFunction: () => _viewModel.login());
+          } else {
             return _getBody();
           }
-
         },
       ),
     );

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../app/app_prefs.dart';
+import '../../app/di.dart';
 import '../resources/constants/app_assets.dart';
 import '../resources/styles/app_colors.dart';
 import '../resources/router/app_router.dart';
@@ -15,13 +17,22 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   late Timer _timer;
+  final AppPrefs appPrefs = getIt<AppPrefs>();
 
   void _startTimer() {
     _timer = Timer(const Duration(seconds: 2), _goNext);
   }
 
   void _goNext() {
-    Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
+    if (appPrefs.isOnBoardingViewed()) {
+      if (appPrefs.isUserLoggedIn()) {
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
+      } else {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      }
+    } else {
+      Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
+    }
   }
 
   @override

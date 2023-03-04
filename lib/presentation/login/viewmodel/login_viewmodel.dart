@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
-
-import 'package:tut/data/network/dio_factory.dart';
+import 'package:tut/app/app_prefs.dart';
+import 'package:tut/app/di.dart';
 import 'package:tut/presentation/common/state_renderer/state_renderer.dart';
 import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
 
@@ -18,13 +17,19 @@ class LoginViewModel extends BaseViewModel
   final LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);
 
+  final AppPrefs appPrefs = getIt<AppPrefs>();
+
   // broadcast means that this stream has multiLetsiner
   final StreamController<String> _userNameStreamController =
-      StreamController<String>.broadcast();
+      StreamController.broadcast();
   final StreamController<String> _passwordStreamController =
-      StreamController<String>.broadcast();
+      StreamController.broadcast();
   final StreamController<void> _areAllInputsValidStreamController =
-      StreamController<void>.broadcast();
+      StreamController.broadcast();
+
+  final StreamController<bool> isUserLoggedInSuccessfullyStreamController =
+      StreamController();
+
   LoginObject loginObject = LoginObject("", "");
 
 
@@ -38,6 +43,7 @@ class LoginViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _areAllInputsValidStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
     super.dispose();
   }
 
@@ -68,7 +74,8 @@ class LoginViewModel extends BaseViewModel
   @override
   Future<void> login() async {
     // To show loading dialog
-    stateInput.add(LoadingState(stateRendererType: StateRendererType.popUpLoadingState));
+    stateInput.add(
+        LoadingState(stateRendererType: StateRendererType.popUpLoadingState));
 
     Either<Failure, AuthenticationModel> either = await _loginUseCase
         .execute(LoginUseCaseInput(loginObject.userName, loginObject.password));
@@ -79,11 +86,15 @@ class LoginViewModel extends BaseViewModel
     // [4] B is null until you determine a specific type like this ex: either.fold<boo>()
     either.fold((failure) {
       // to show failure dialog
-      stateInput.add(ErrorState(stateRendererType: StateRendererType.popUpErrorState,message: failure.message));
+      stateInput.add(ErrorState(
+          stateRendererType: StateRendererType.popUpErrorState,
+          message: failure.message));
     }, (authenticationModel) {
       // To remove loading dialog
       stateInput.add(ContentState());
       // TODO: Navigator to home page
+      appPrefs.setUserLoggedIn();
+      isUserLoggedInSuccessfullyStreamController.sink.add(true);
     });
   }
 
@@ -98,7 +109,8 @@ class LoginViewModel extends BaseViewModel
       _passwordStreamController.stream.map(_isPasswordValid);
   @override
   Stream<bool> get areAllInputsValidOutput =>
-      _areAllInputsValidStreamController.stream.map((_) => _areAllInputsValid());
+      _areAllInputsValidStreamController.stream
+          .map((_) => _areAllInputsValid());
 
   /// userName & password are String but I use dynamic to make methods valid for map method of stream
   bool _isUserNameValid(String userName) {

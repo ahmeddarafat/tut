@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
 import '../viewmodel/onboarding_viewmodel.dart';
 import '../../resources/constants/app_assets.dart';
 import '../../resources/styles/app_colors.dart';
@@ -21,6 +23,7 @@ class OnBoardingLayouts extends StatefulWidget {
 class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
   final PageController _pageController = PageController();
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final AppPrefs appPrefs = getIt<AppPrefs>();
 
   void _bind() {
     _viewModel.start();
@@ -87,6 +90,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 onPressed: () {
+                  appPrefs.setOnBoardingViewed();
                   Navigator.of(context).pushReplacementNamed(AppRoutes.login);
                 },
               ),
@@ -136,10 +140,12 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
           // right arrow
           GestureDetector(
             onTap: () {
-              _pageController.animateToPage(_viewModel.goNext(),
-                  duration: const Duration(
-                      milliseconds: AppConstants.sliderAnimationTime),
-                  curve: Curves.easeIn);
+              _pageController.animateToPage(
+                _viewModel.goNext(),
+                duration: const Duration(
+                    milliseconds: AppConstants.sliderAnimationTime,),
+                curve: Curves.easeIn,
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(AppPading.p16),
