@@ -1,6 +1,7 @@
 class Constants{
   static const String baseUrl ="https://ahmedarafat.mocklab.io";
   static const String login ="/customer/login";
+  static const String register ="/customer/register";
   static const String forgetPassword ="/customer/forgetPassword";
   static const String empty ="";
   static const int zero =0;

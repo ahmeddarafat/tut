@@ -15,7 +15,7 @@ class RepositoryImpl implements Repository {
   final RemoteDataSource _remoteDataSource;
 
   RepositoryImpl(this._networkInfo, this._remoteDataSource);
-  
+
   @override
   Future<Either<Failure, AuthenticationModel>> login(
       LoginRequest loginRequest) async {
@@ -54,6 +54,31 @@ class RepositoryImpl implements Repository {
         } else {
           return Left(Failure(ApiInternalStatus.failure,
               response.message ?? ResponseMessage.unknown));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(DataSource.noInternetConnection.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthenticationModel>> register(
+      RegisterRequest registerRequest) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final AuthentecationResponse response =
+            await _remoteDataSource.register(registerRequest);
+        if (response.status == ApiInternalStatus.success) {
+          return Right(response.toDomain());
+        } else {
+          return Left(
+            Failure(
+              ApiInternalStatus.failure,
+              response.message ?? ResponseMessage.unknown,
+            ),
+          );
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);

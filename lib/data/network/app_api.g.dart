@@ -55,8 +55,10 @@ class _AppServiceClient implements AppServiceClient {
   Future<ForgetPasswordResponse> forgetPassword(email) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {'email': email};
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ForgetPasswordResponse>(Options(
       method: 'POST',
@@ -71,6 +73,45 @@ class _AppServiceClient implements AppServiceClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ForgetPasswordResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AuthentecationResponse> register(
+    userName,
+    countryMobileCode,
+    mobileNumber,
+    email,
+    password,
+    profilePicture,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'user_name': userName,
+      'country_mobile_code': countryMobileCode,
+      'mobile_number': mobileNumber,
+      'email': email,
+      'password': password,
+      'profile_picture': profilePicture,
+    };
+    _data.removeWhere((k, v) => v == null);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AuthentecationResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/customer/login',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AuthentecationResponse.fromJson(_result.data!);
     return value;
   }
 
