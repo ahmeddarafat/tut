@@ -27,4 +27,11 @@ class AppStrings {
   static const String loading = "Loading...";
   static const String tryAgain = "Try Again";
   static const String ok = "Ok";
+
+  /// forget password
+  static const String emailAddress = "Email Address";
+  static const String emailAddressError = "please, enter your Email Address";
+  static const String didNotReceiveEmail = "Didn't receive email ?";
+  static const String resend = "Resend";
+
 }

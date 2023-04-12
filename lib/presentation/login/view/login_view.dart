@@ -4,9 +4,9 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
-import 'package:tut/presentation/resources/constants/app_strings.dart';
-import 'package:tut/presentation/resources/router/app_router.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
+import '../../resources/constants/app_strings.dart';
+import '../../resources/router/app_router.dart';
 import '../../resources/widgets/public_button.dart';
 import '../../resources/widgets/public_text.dart';
 import '../viewmodel/login_viewmodel.dart';
@@ -14,7 +14,7 @@ import '../../resources/constants/app_assets.dart';
 import '../../resources/constants/app_values.dart';
 import '../../resources/styles/app_colors.dart';
 import '../../resources/widgets/Public_text_form_field.dart';
-import 'package:tut/app/di.dart';
+import '../../../app/di.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -79,9 +79,10 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return snapshot.data!.getScreenWidget(
-                context: context,
-                contentWidget: _getBody(),
-                retryActionFunction: () => _viewModel.login());
+              context: context,
+              contentWidget: _getBody(),
+              retryActionFunction: () => _viewModel.login(),
+            );
           } else {
             return _getBody();
           }
@@ -158,7 +159,10 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.forgetPassword);
+                        },
                         child: const PublicText(
                           txt: AppStrings.forgetPassword,
                           color: AppColors.orange,
@@ -166,7 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          // TODO: Navigate to sign up view
+                        },
                         child: const PublicText(
                           txt: AppStrings.notMemeberSignUp,
                           color: AppColors.orange,

@@ -32,7 +32,6 @@ class LoginViewModel extends BaseViewModel
 
   LoginObject loginObject = LoginObject("", "");
 
-
   @override
   void start() {
     stateInput.add(ContentState());
@@ -112,6 +111,8 @@ class LoginViewModel extends BaseViewModel
       _areAllInputsValidStreamController.stream
           .map((_) => _areAllInputsValid());
 
+  //* helper methods
+
   /// userName & password are String but I use dynamic to make methods valid for map method of stream
   bool _isUserNameValid(String userName) {
     return userName.isNotEmpty;
@@ -128,16 +129,16 @@ class LoginViewModel extends BaseViewModel
 }
 
 abstract class LoginViewModelInputs {
-// those inputs (things that user gives them to you) that you will apply at login view (page)
+  // those inputs (things that user gives them to you) that you will apply at login view (page)
   setUserName(String userName);
   setPassword(String password);
 
-// better naming : clickLoginButton
+  // better naming : clickLoginButton
   login();
 
-// the inputs that is responsible for giving the outputs
-// Sink is the pipe that you give an input (stream of inputs) from side
-// then, you can listen from another side
+  // the inputs that is responsible for giving the outputs
+  // Sink is the pipe that you give an input (stream of inputs) from side
+  // then, you can listen from another side
   Sink get userNameInput;
   Sink get passwordInputs;
   Sink get areAllInputsValidInput;

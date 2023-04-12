@@ -26,7 +26,8 @@ class _SplashPageState extends State<SplashPage> {
   void _goNext() {
     if (appPrefs.isOnBoardingViewed()) {
       if (appPrefs.isUserLoggedIn()) {
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        // TODO: return login to home
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.login);
       }

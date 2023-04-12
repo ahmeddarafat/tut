@@ -8,7 +8,9 @@ import 'package:tut/data/network/app_api.dart';
 import 'package:tut/data/network/dio_factory.dart';
 import 'package:tut/data/repository/repository_impl.dart';
 import 'package:tut/domain/repository/repository.dart';
+import 'package:tut/domain/usecase/forget_password_usecase.dart';
 import 'package:tut/domain/usecase/login_usecase.dart';
+import 'package:tut/presentation/forget_passwrod/viewmodel/forget_password_viewmodel.dart';
 import 'package:tut/presentation/login/viewmodel/login_viewmodel.dart';
 
 import '../data/network/netwrok_info.dart';
@@ -20,7 +22,7 @@ Future<void> initAppModule() async {
   /// Shared Preferences
   final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
   // lazy means initialize instance when first call
-  // singleton means initialize only one instance for whole app
+  // singleton means initialize only one instance for whole app and still at memory while app cycle
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
 
   /// app Preferences
@@ -52,11 +54,22 @@ void initLoginModule() {
   // To ensure if loginUseCase instance is initialized, don't initialize it again
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     /// login use case
+    //  factory
+    //       - means that it's just created when I call for it and not stored at memory
     getIt
         .registerFactory<LoginUseCase>(() => LoginUseCase(getIt<Repository>()));
 
     /// login view model
     getIt.registerFactory<LoginViewModel>(
         () => LoginViewModel(getIt<LoginUseCase>()));
+  }
+}
+
+void initForgetPasswordModule() {
+  if (!GetIt.I.isRegistered<ForgetPasswordUsecase>()) {
+    getIt.registerFactory<ForgetPasswordUsecase>(
+        () => ForgetPasswordUsecase(getIt<Repository>()));
+    getIt.registerFactory<ForgetPasswordViewModel>(
+        () => ForgetPasswordViewModel(getIt<ForgetPasswordUsecase>()));
   }
 }

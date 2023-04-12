@@ -12,6 +12,7 @@ enum StateRendererType {
   /// popup
   popUpLoadingState,
   popUpErrorState,
+  popUpSuccessState,
 
   /// full screen
   fullScreenLoadingState,
@@ -58,6 +59,12 @@ class StateRenderer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
           ),
         );
+      case StateRendererType.popUpSuccessState:
+        return PopDialog(
+          item: SuccessItems(
+            message: message,
+          ),
+        );
       case StateRendererType.fullScreenLoadingState:
         return const RugularItems(
           message: AppStrings.loading,
@@ -99,12 +106,13 @@ class PopDialog extends StatelessWidget {
       elevation: AppSize.s1_5,
       backgroundColor: Colors.transparent,
       child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(AppSize.s14),
-            boxShadow: const [BoxShadow(color: Colors.black26)],
-          ),
-          child: item),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(AppSize.s14),
+          boxShadow: const [BoxShadow(color: Colors.black26)],
+        ),
+        child: item,
+      ),
     );
   }
 }
@@ -125,7 +133,7 @@ class ErrorItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
       child: Column(
         mainAxisSize: mainAxisSize,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -133,7 +141,7 @@ class ErrorItems extends StatelessWidget {
           SizedBox(
             height: AppSize.s100,
             width: AppSize.s100,
-            child: Lottie.asset(AppJsons.error), 
+            child: Lottie.asset(AppJsons.error),
           ),
           const SizedBox(height: 10),
           PublicText(
@@ -174,23 +182,68 @@ class RugularItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: mainAxisSize,
-      children: [
-        SizedBox(
-          height: AppSize.s100,
-          width: AppSize.s100,
-          child: Lottie.asset(json), 
-        ),
-        const SizedBox(height: 10),
-        PublicText(
-          txt: message,
-          color: AppColors.black,
-          size: 20,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: mainAxisSize,
+        children: [
+          SizedBox(
+            height: AppSize.s100,
+            width: AppSize.s100,
+            child: Lottie.asset(json),
+          ),
+          const SizedBox(height: 10),
+          PublicText(
+            txt: message,
+            color: AppColors.black,
+            size: 20,
+          ),
+        ],
+      ),
     );
   }
 }
 
+class SuccessItems extends StatelessWidget {
+  final String message;
+  const SuccessItems({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: AppSize.s100,
+            width: AppSize.s100,
+            child: Lottie.asset(AppJsons.success),
+          ),
+          const SizedBox(height: 10),
+          const PublicText(
+            txt: "Success",
+            color: AppColors.black,
+            size: 20,
+          ),
+          const SizedBox(height: 10),
+          PublicText(
+            txt: message,
+            color: AppColors.black,
+            size: 18,
+            max: 4,
+          ),
+          const SizedBox(height: 20),
+          PublicButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            title: "Ok",
+          ),
+        ],
+      ),
+    );
+  }
+}

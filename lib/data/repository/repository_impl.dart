@@ -15,6 +15,7 @@ class RepositoryImpl implements Repository {
   final RemoteDataSource _remoteDataSource;
 
   RepositoryImpl(this._networkInfo, this._remoteDataSource);
+  
   @override
   Future<Either<Failure, AuthenticationModel>> login(
       LoginRequest loginRequest) async {
@@ -38,6 +39,26 @@ class RepositoryImpl implements Repository {
       }
     } else {
       /// there is not internet
+      return Left(DataSource.noInternetConnection.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> forgetPassword(String email) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        ForgetPasswordResponse response =
+            await _remoteDataSource.forgetPassword(email);
+        if (response.status == ApiInternalStatus.success) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(ApiInternalStatus.failure,
+              response.message ?? ResponseMessage.unknown));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
       return Left(DataSource.noInternetConnection.getFailure());
     }
   }
