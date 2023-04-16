@@ -14,14 +14,16 @@ class RegisterUseCase
 
   @override
   Future<Either<Failure, AuthenticationModel>> execute(input) async {
-    return await _repository.register(RegisterRequest(
-      userName: input.userName,
-      countryMobileCode: input.countryMobileCode,
-      mobileNumber: input.mobileNumber,
-      email: input.email,
-      password: input.password,
-      profilePicture: input.profilePicture,
-    ));
+    return await _repository.register(
+      RegisterRequest(
+        userName: input.userName,
+        countryMobileCode: input.countryMobileCode,
+        mobileNumber: input.mobileNumber,
+        email: input.email,
+        password: input.password,
+        profilePicture: input.profilePicture,
+      ),
+    );
   }
 }
 
