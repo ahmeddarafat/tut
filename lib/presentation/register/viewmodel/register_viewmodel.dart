@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:tut/app/functions.dart';
-import 'package:tut/domain/usecase/register_usecase.dart';
-import 'package:tut/presentation/common/data_object/freezed_data_classes.dart';
+import 'package:tut/app/app_prefs.dart';
+import 'package:tut/app/di.dart';
+import '../../../app/functions.dart';
+import '../../../domain/usecase/register_usecase.dart';
+import '../../common/data_object/freezed_data_classes.dart';
 
 import '../../../data/network/failure.dart';
 import '../../../domain/models/models.dart';
@@ -16,7 +19,7 @@ abstract class RegisterViewModelInputs {
   Sink<String> get userNameInput;
   Sink<String> get mobileNumberInput;
   Sink<String> get emailInput;
-  Sink<String> get passwordInputs;
+  Sink<String> get passwordInput;
   Sink<File> get profilePictureInput;
   Sink<bool> get areAllInputsValidInput;
 
@@ -35,7 +38,7 @@ abstract class RegisterViewModelOutputs {
   Stream<bool> get ismobileNumberValidOutput;
   Stream<bool> get isEmailValidOutput;
   Stream<bool> get isPasswordValidOutput;
-  Stream<bool> get isProfilePictureValidOutput;
+  Stream<File> get profilePictureOutput;
   Stream<bool> get areAllInputsValidOutput;
 }
 
@@ -44,23 +47,30 @@ class RegisterViewModel extends BaseViewModel
   final RegisterUseCase _registerUseCase;
   RegisterViewModel(this._registerUseCase);
 
+  final AppPrefs appPrefs= getIt<AppPrefs>();
+
   late StreamController<String> _userNameStreamController;
   late StreamController<String> _mobileNumberStreamController;
   late StreamController<String> _emailStreamController;
   late StreamController<String> _passwordStreamController;
   late StreamController<File> _profilePictureStreamController;
   late StreamController<bool> _areAllInputsValidStreamController;
+  late final StreamController<bool> isUserRegisteredSuccessfullyStreamController;
 
-  RegisterObject _registerObject = RegisterObject("", "", "", "", "", "");
+  RegisterObject _registerObject = RegisterObject("", "+20", "", "", "", "");
 
   @override
   void start() {
-    _userNameStreamController = StreamController();
-    _mobileNumberStreamController = StreamController();
-    _emailStreamController = StreamController();
-    _passwordStreamController = StreamController();
-    _profilePictureStreamController = StreamController();
-    _areAllInputsValidStreamController = StreamController();
+    stateInput.add(ContentState());
+    // TODO: broadcast
+    // I don't now why these streams need broadcast
+    _userNameStreamController = StreamController.broadcast();
+    _mobileNumberStreamController = StreamController.broadcast();
+    _emailStreamController = StreamController.broadcast();
+    _passwordStreamController = StreamController.broadcast();
+    _profilePictureStreamController = StreamController.broadcast();
+    _areAllInputsValidStreamController = StreamController.broadcast();
+    isUserRegisteredSuccessfullyStreamController = StreamController();
   }
 
   @override
@@ -71,6 +81,7 @@ class RegisterViewModel extends BaseViewModel
     _passwordStreamController.close();
     _profilePictureStreamController.close();
     _areAllInputsValidStreamController.close();
+    isUserRegisteredSuccessfullyStreamController.close();
     super.dispose();
   }
 
@@ -86,7 +97,7 @@ class RegisterViewModel extends BaseViewModel
   Sink<String> get emailInput => _emailStreamController.sink;
 
   @override
-  Sink<String> get passwordInputs => _passwordStreamController.sink;
+  Sink<String> get passwordInput => _passwordStreamController.sink;
 
   @override
   Sink<File> get profilePictureInput => _profilePictureStreamController.sink;
@@ -124,9 +135,8 @@ class RegisterViewModel extends BaseViewModel
     }, (authenticationModel) {
       // To remove loading dialog
       stateInput.add(ContentState());
-      // TODO: Navigator to home page
-      // appPrefs.setUserLoggedIn();
-      // isUserLoggedInSuccessfullyStreamController.sink.add(true);
+      appPrefs.setUserLoggedIn();
+      isUserRegisteredSuccessfullyStreamController.sink.add(true);
     });
   }
 
@@ -143,6 +153,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void setEmail(String email) {
+    emailInput.add(email);
     if (isEmailValid(email)) {
       _registerObject = _registerObject.copyWith(email: email);
     } else {
@@ -153,6 +164,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void setMobileNumber(String mobileNumber) {
+    mobileNumberInput.add(mobileNumber);
     if (isMobileNumberValid(mobileNumber)) {
       _registerObject = _registerObject.copyWith(mobileNumber: mobileNumber);
     } else {
@@ -163,6 +175,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void setPassword(String password) {
+    passwordInput.add(password);
     if (isPasswordValid(password)) {
       _registerObject = _registerObject.copyWith(password: password);
     } else {
@@ -173,6 +186,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void setProfilePicture(File profilePicture) {
+    profilePictureInput.add(profilePicture);
     if (profilePicture.path.isNotEmpty) {
       _registerObject =
           _registerObject.copyWith(profilePicture: profilePicture.path);
@@ -184,6 +198,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void setUserName(String userName) {
+    userNameInput.add(userName);
     if (userName.isNotEmpty) {
       _registerObject = _registerObject.copyWith(userName: userName);
     } else {
@@ -211,9 +226,8 @@ class RegisterViewModel extends BaseViewModel
       _passwordStreamController.stream.map(isPasswordValid);
 
   @override
-  Stream<bool> get isProfilePictureValidOutput =>
-      _profilePictureStreamController.stream
-          .map((file) => file.path.isNotEmpty);
+  Stream<File> get profilePictureOutput =>
+      _profilePictureStreamController.stream;
 
   @override
   Stream<bool> get areAllInputsValidOutput =>
@@ -223,10 +237,8 @@ class RegisterViewModel extends BaseViewModel
 
   bool _areAllInputValid() {
     return _registerObject.userName.isNotEmpty &&
-        _registerObject.mobileNumber.isNotEmpty &&
         _registerObject.email.isNotEmpty &&
         _registerObject.password.isNotEmpty &&
-        _registerObject.profilePicture.isNotEmpty &&
         _registerObject.countryMobileCode.isNotEmpty;
   }
 

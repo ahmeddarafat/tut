@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:tut/app/app_prefs.dart';
-import 'package:tut/app/di.dart';
-import 'package:tut/presentation/common/state_renderer/state_renderer.dart';
-import 'package:tut/presentation/common/state_renderer/state_renderer_impl.dart';
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
 
 import '../../../data/network/failure.dart';
 import 'package:dartz/dartz.dart';
@@ -91,7 +91,6 @@ class LoginViewModel extends BaseViewModel
     }, (authenticationModel) {
       // To remove loading dialog
       stateInput.add(ContentState());
-      // TODO: Navigator to home page
       appPrefs.setUserLoggedIn();
       isUserLoggedInSuccessfullyStreamController.sink.add(true);
     });

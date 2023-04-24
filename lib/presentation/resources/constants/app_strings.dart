@@ -34,4 +34,14 @@ class AppStrings {
   static const String didNotReceiveEmail = "Didn't receive email ?";
   static const String resend = "Resend";
 
+  /// register
+  static const String mobileNumber = "Mobile Number";
+  static const String mobileNumberError = "please, enter your mobile number";
+  static const String register = "Register";
+  static const String alreadyHaveEmail = "Already Have An Account ? Login";
+  static const String profilePicture = "Profile Picture";
+  static const String profilePictureError = "please, enter your Profile Picture";
+  static const String camera = "Camera";
+  static const String gallery = "Gallery";
+
 }

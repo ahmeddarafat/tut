@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_fonts.dart';
 import '../styles/app_style.dart';
 
@@ -113,8 +110,8 @@ class _PublicTextFormFieldState extends State<PublicTextFormField> {
             });
           }),
           child: !showPassword
-              ? const Icon(Icons.visibility)
-              : const Icon(Icons.visibility_off));
+              ? const Icon(Icons.visibility,color: AppColors.orange,)
+              : const Icon(Icons.visibility_off,color: AppColors.orange,));
     }
     return null;
   }

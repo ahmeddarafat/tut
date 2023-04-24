@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tut/app/constants.dart';
-import 'package:tut/presentation/resources/constants/app_strings.dart';
+import '../../../app/constants.dart';
+import '../../resources/constants/app_strings.dart';
 
 import 'state_renderer.dart';
 

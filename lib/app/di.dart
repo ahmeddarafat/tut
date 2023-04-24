@@ -1,17 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tut/app/app_prefs.dart';
-import 'package:tut/data/data_source/remote_data_source.dart';
-import 'package:tut/data/network/app_api.dart';
-import 'package:tut/data/network/dio_factory.dart';
-import 'package:tut/data/repository/repository_impl.dart';
-import 'package:tut/domain/repository/repository.dart';
-import 'package:tut/domain/usecase/forget_password_usecase.dart';
-import 'package:tut/domain/usecase/login_usecase.dart';
-import 'package:tut/presentation/forget_passwrod/viewmodel/forget_password_viewmodel.dart';
-import 'package:tut/presentation/login/viewmodel/login_viewmodel.dart';
+import 'app_prefs.dart';
+import '../data/data_source/remote_data_source.dart';
+import '../data/network/app_api.dart';
+import '../data/network/dio_factory.dart';
+import '../data/repository/repository_impl.dart';
+import '../domain/repository/repository.dart';
+import '../domain/usecase/forget_password_usecase.dart';
+import '../domain/usecase/login_usecase.dart';
+import '../domain/usecase/register_usecase.dart';
+import '../presentation/forget_passwrod/viewmodel/forget_password_viewmodel.dart';
+import '../presentation/login/viewmodel/login_viewmodel.dart';
+import '../presentation/register/viewmodel/register_viewmodel.dart';
 
 import '../data/network/netwrok_info.dart';
 
@@ -71,5 +74,18 @@ void initForgetPasswordModule() {
         () => ForgetPasswordUsecase(getIt<Repository>()));
     getIt.registerFactory<ForgetPasswordViewModel>(
         () => ForgetPasswordViewModel(getIt<ForgetPasswordUsecase>()));
+  }
+}
+
+void initRegisterModule() {
+  // To ensure if loginUseCase instance is initialized, don't initialize it again
+  if (!GetIt.I.isRegistered<RegisterUseCase>()) {
+    getIt
+        .registerFactory<RegisterUseCase>(() => RegisterUseCase(getIt<Repository>()));
+    /// login view model
+    getIt.registerFactory<RegisterViewModel>(
+        () => RegisterViewModel(getIt<RegisterUseCase>()));
+    getIt.registerFactory<ImagePicker>(
+        () => ImagePicker());
   }
 }

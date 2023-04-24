@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +12,7 @@ import '../viewmodel/login_viewmodel.dart';
 import '../../resources/constants/app_assets.dart';
 import '../../resources/constants/app_values.dart';
 import '../../resources/styles/app_colors.dart';
-import '../../resources/widgets/Public_text_form_field.dart';
+import '../../resources/widgets/public_text_form_field.dart';
 import '../../../app/di.dart';
 
 class LoginPage extends StatefulWidget {
@@ -171,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          // TODO: Navigate to sign up view
+                          Navigator.pushNamed(context, AppRoutes.register);
                         },
                         child: const PublicText(
                           txt: AppStrings.notMemeberSignUp,

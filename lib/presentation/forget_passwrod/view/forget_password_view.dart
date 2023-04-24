@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tut/presentation/resources/widgets/public_text.dart';
+import '../../resources/widgets/public_text.dart';
 
 import '../../../app/di.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
@@ -10,7 +10,7 @@ import '../../resources/constants/app_assets.dart';
 import '../../resources/constants/app_strings.dart';
 import '../../resources/constants/app_values.dart';
 import '../../resources/styles/app_colors.dart';
-import '../../resources/widgets/Public_text_form_field.dart';
+import '../../resources/widgets/public_text_form_field.dart';
 import '../../resources/widgets/public_button.dart';
 import '../viewmodel/forget_password_viewmodel.dart';
 

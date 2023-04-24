@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_fonts.dart';
 
 class AppStyle {
