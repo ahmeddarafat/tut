@@ -64,7 +64,7 @@ class _RegisterViewState extends State<RegisterView> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.home,
+          AppRoutes.main,
           (_) => false,
         );
       });

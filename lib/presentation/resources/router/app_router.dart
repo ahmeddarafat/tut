@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tut/presentation/main/main_view.dart';
 import '../../../app/di.dart';
 import '../../forget_passwrod/view/forget_password_view.dart';
 import '../../login/view/login_view.dart';
@@ -9,7 +10,7 @@ import '../../splash/splash_page.dart';
 class AppRoutes {
   static const String splash = "/";
   static const String onBoarding = "/onBoarding";
-  static const String home = "/home";
+  static const String main = "/main";
   static const String login = "/login";
   static const String register = "/register";
   static const String forgetPassword = "/forgetPassword";
@@ -31,6 +32,8 @@ class RouteGenerate {
       case AppRoutes.forgetPassword:
         initForgetPasswordModule();
         return MaterialPageRoute(builder: (_) => const ForgetPasswordView());
+      case AppRoutes.main:
+        return MaterialPageRoute(builder: (_) => const MainView());
       default:
         return MaterialPageRoute(builder: (_) => _undfinedPage(route:routeSettings.name));
     }

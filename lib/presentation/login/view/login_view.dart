@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.home,
+          AppRoutes.main,
           (route) => false,
         );
       });

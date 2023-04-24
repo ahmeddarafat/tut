@@ -44,4 +44,10 @@ class AppStrings {
   static const String camera = "Camera";
   static const String gallery = "Gallery";
 
+  /// Main
+  static const String home = "Home";
+  static const String search = "Search";
+  static const String notificataions = "Notifications";
+  static const String settings = "Settings";
+
 }
