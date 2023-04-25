@@ -30,6 +30,10 @@ abstract class AppServiceClient {
     @Field("password") String? password,
     @Field("profile_picture") String? profilePicture,
   );
+
+  @GET(Constants.home)
+  Future<HomeResponse> getHomeData();
+
 }
 
 
