@@ -43,10 +43,7 @@ class _MainViewState extends State<MainView> {
           size: 16,
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
-      ),
+      body: pages[_currentIndex],
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           boxShadow: [

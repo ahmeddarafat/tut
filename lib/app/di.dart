@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tut/data/data_source/local_data_source.dart';
 import 'package:tut/domain/usecase/home_usecase.dart';
 import 'package:tut/presentation/main/pages/home/viewmodel/home_viewmodel.dart';
 import 'app_prefs.dart';
@@ -50,9 +51,15 @@ Future<void> initAppModule() async {
   getIt.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(getIt<AppServiceClient>()));
 
+  /// local data source
+  getIt.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
+
   /// repository
-  getIt.registerLazySingleton<Repository>(
-      () => RepositoryImpl(getIt<NetworkInfo>(), getIt<RemoteDataSource>()));
+  getIt.registerLazySingleton<Repository>(() => RepositoryImpl(
+        getIt<NetworkInfo>(),
+        getIt<RemoteDataSource>(),
+        getIt<LocalDataSource>(),
+      ));
 }
 
 void initLoginModule() {

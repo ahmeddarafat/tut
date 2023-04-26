@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:tut/data/data_source/local_data_source.dart';
+
 import '../data_source/remote_data_source.dart';
 import '../mapper/mapper.dart';
 import '../network/error_handler.dart';
@@ -13,8 +17,10 @@ import '../response/responses.dart';
 class RepositoryImpl implements Repository {
   final NetworkInfo _networkInfo;
   final RemoteDataSource _remoteDataSource;
+  final LocalDataSource _localDataSource;
 
-  RepositoryImpl(this._networkInfo, this._remoteDataSource);
+  RepositoryImpl(
+      this._networkInfo, this._remoteDataSource, this._localDataSource);
 
   @override
   Future<Either<Failure, AuthenticationModel>> login(
@@ -87,31 +93,36 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.noInternetConnection.getFailure());
     }
   }
-  
+
   @override
-  Future<Either<Failure, HomeModel>> getHomeData() async{
-
-     if (await _networkInfo.isConnected) {
-      try {
-        final HomeResponse response =
-            await _remoteDataSource.getHomeData();
-        if (response.status == ApiInternalStatus.success) {
-          return Right(response.toDomain());
-        } else {
-          return Left(
-            Failure(
-              ApiInternalStatus.failure,
-              response.message ?? ResponseMessage.unknown,
-            ),
-          );
+  Future<Either<Failure, HomeModel>> getHomeData() async {
+    try {
+      final HomeResponse response =  _localDataSource.getHomeData();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      log("not from cache");
+      log(cacheError.toString());
+      if (await _networkInfo.isConnected) {
+        try {
+          final HomeResponse response = await _remoteDataSource.getHomeData();
+          if (response.status == ApiInternalStatus.success) {
+            _localDataSource.setHomeData(response);
+            return Right(response.toDomain());
+          } else {
+            return Left(
+              Failure(
+                ApiInternalStatus.failure,
+                response.message ?? ResponseMessage.unknown,
+              ),
+            );
+          }
+        } catch (error) {
+          return Left(ErrorHandler.handle(error).failure);
         }
-      } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
+      } else {
+        return Left(DataSource.noInternetConnection.getFailure());
       }
-    } else {
-      return Left(DataSource.noInternetConnection.getFailure());
     }
-
   }
 }
 
