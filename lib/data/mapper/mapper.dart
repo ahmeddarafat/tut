@@ -97,3 +97,15 @@ extension BannerResponseMapper on BannerResponse {
     );
   }
 }
+
+/// store Details mapper
+
+extension StoreDetailsResponseMapper on StoreDetailsResponse {
+  StoreDetailsModel toDomain() {
+    return StoreDetailsModel(
+      title.orEmpty(),
+      image.orEmpty(),
+      details.orEmpty(),
+    );
+  }
+}

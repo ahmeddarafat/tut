@@ -15,6 +15,8 @@ class BaseResponse {
   String? message;
 }
 
+/// Login and register respose
+
 @JsonSerializable()
 class AuthentecationResponse extends BaseResponse {
   @JsonKey(name: "customer")
@@ -77,6 +79,8 @@ class ContactResponse {
   Map<String, dynamic> toJson() => _$ContactResponseToJson(this);
 }
 
+/// forget password response
+
 @JsonSerializable()
 class ForgetPasswordResponse extends BaseResponse {
   @JsonKey(name: "support")
@@ -93,6 +97,7 @@ class ForgetPasswordResponse extends BaseResponse {
 
 }
 
+/// home response
 
 @JsonSerializable()
 class HomeResponse extends BaseResponse{
@@ -129,8 +134,6 @@ class HomeDataResponse {
   Map<String, dynamic> toJson() => _$HomeDataResponseToJson(this);
 
 }
-
-
 
 @JsonSerializable()
 class ServiceResponse {
@@ -193,6 +196,28 @@ class BannerResponse {
       _$BannerResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$BannerResponseToJson(this);
+}
+
+/// store details response
+
+@JsonSerializable()
+class StoreDetailsResponse extends BaseResponse {
+  @JsonKey(name: "title")
+  String? title;
+  @JsonKey(name: "image")
+  String? image;
+  @JsonKey(name: "details")
+  String? details;
+  StoreDetailsResponse(
+    this.title,
+    this.image,
+    this.details,
+  );
+
+    factory StoreDetailsResponse.fromJson(Map<String, dynamic> json) =>
+      _$StoreDetailsResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StoreDetailsResponseToJson(this);
 }
 
 // notes:   "write here the darft of summay and when finishing, move to notion "

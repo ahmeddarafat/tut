@@ -4,36 +4,28 @@ import 'package:tut/data/network/error_handler.dart';
 
 import '../response/responses.dart';
 
-const String cacheKey = "Cache Key";
+const String cacheHomeKey = "Cache Home Key";
+const String cacheStoreDetailsKey = "Cache Store Details Key";
 const int cacheInterval = 60 * 1000;
 
 abstract class LocalDataSource {
-  HomeResponse getHomeData();
-  Future<void> setHomeData(HomeResponse homeResponse);
+  //* Base methods
   void clearCache();
   void removeFromCache(String key);
+
+  //* home data
+  HomeResponse getHomeData();
+  void setHomeData(HomeResponse homeResponse);
+
+  //* store details
+  StoreDetailsResponse getStoreDetails();
+  void setStoreDetails(StoreDetailsResponse storeDetailsResponse);
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
   Map<String, CacheItem> cacheMap = {};
-  @override
-  HomeResponse getHomeData() {
-    CacheItem? cacheItem = cacheMap[cacheKey];
 
-    if (cacheItem != null && cacheItem.isValid(cacheInterval)) {
-      log("cache item is valid");
-      return cacheItem.data;
-    } else {
-      log("cache item is not valid");
-      throw ErrorHandler.handle(DataSource.cacheError);
-    }
-  }
-
-  @override
-  Future<void> setHomeData(HomeResponse homeResponse) async {
-    cacheMap[cacheKey] = CacheItem(homeResponse);
-  }
-
+  //* Base Methods
   @override
   void clearCache() {
     cacheMap.clear();
@@ -42,6 +34,38 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   void removeFromCache(String key) {
     cacheMap.remove(key);
+  }
+
+  //* home data
+  @override
+  HomeResponse getHomeData() {
+    CacheItem? cacheItem = cacheMap[cacheHomeKey];
+    if (cacheItem != null && cacheItem.isValid(cacheInterval)) {
+      return cacheItem.data;
+    } else {
+      throw ErrorHandler.handle(DataSource.cacheError);
+    }
+  }
+
+  @override
+  void setHomeData(HomeResponse homeResponse) {
+    cacheMap[cacheHomeKey] = CacheItem(homeResponse);
+  }
+
+  //* store details
+  @override
+  StoreDetailsResponse getStoreDetails() {
+    CacheItem? cacheItem = cacheMap[cacheStoreDetailsKey];
+    if (cacheItem != null && cacheItem.isValid(cacheInterval)) {
+      return cacheItem.data;
+    } else {
+      throw ErrorHandler.handle(DataSource.cacheError);
+    }
+  }
+
+  @override
+  void setStoreDetails(StoreDetailsResponse storeDetailsResponse) {
+    cacheMap[cacheStoreDetailsKey] = CacheItem(storeDetailsResponse);
   }
 }
 

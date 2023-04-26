@@ -87,3 +87,17 @@ class BannerModel {
 
   BannerModel(this.id, this.link, this.title, this.image);
 }
+
+/// store details
+
+class StoreDetailsModel {
+  final String title;
+  final String image;
+  final String details;
+
+  StoreDetailsModel(
+    this.title,
+    this.image,
+    this.details,
+  );
+}

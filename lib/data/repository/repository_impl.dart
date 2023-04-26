@@ -97,7 +97,7 @@ class RepositoryImpl implements Repository {
   @override
   Future<Either<Failure, HomeModel>> getHomeData() async {
     try {
-      final HomeResponse response =  _localDataSource.getHomeData();
+      final HomeResponse response = _localDataSource.getHomeData();
       return Right(response.toDomain());
     } catch (cacheError) {
       log("not from cache");
@@ -107,6 +107,36 @@ class RepositoryImpl implements Repository {
           final HomeResponse response = await _remoteDataSource.getHomeData();
           if (response.status == ApiInternalStatus.success) {
             _localDataSource.setHomeData(response);
+            return Right(response.toDomain());
+          } else {
+            return Left(
+              Failure(
+                ApiInternalStatus.failure,
+                response.message ?? ResponseMessage.unknown,
+              ),
+            );
+          }
+        } catch (error) {
+          return Left(ErrorHandler.handle(error).failure);
+        }
+      } else {
+        return Left(DataSource.noInternetConnection.getFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, StoreDetailsModel>> getStoreDetails() async {
+    try {
+      final StoreDetailsResponse response = _localDataSource.getStoreDetails();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      if (await _networkInfo.isConnected) {
+        try {
+          final StoreDetailsResponse response =
+              await _remoteDataSource.getStoreDetails();
+          if (response.status == ApiInternalStatus.success) {
+            _localDataSource.setStoreDetails(response);
             return Right(response.toDomain());
           } else {
             return Left(

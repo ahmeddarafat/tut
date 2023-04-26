@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:tut/data/response/responses.dart';
 import '../../data/network/requests.dart';
 import '../models/models.dart';
 
@@ -11,5 +10,6 @@ abstract class Repository{
  Future<Either<Failure,AuthenticationModel>> register(RegisterRequest registerRequest);
  Future<Either<Failure,String>> forgetPassword(String email);
  Future<Either<Failure,HomeModel>> getHomeData();
+ Future<Either<Failure,StoreDetailsModel>> getStoreDetails();
 
 }
