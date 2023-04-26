@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tut/presentation/main/pages/home_page.dart';
-import 'package:tut/presentation/main/pages/notifications_page.dart';
-import 'package:tut/presentation/main/pages/search_page.dart';
-import 'package:tut/presentation/main/pages/settings_page.dart';
+import 'package:tut/presentation/main/pages/home/view/home_view.dart';
+import 'package:tut/presentation/main/pages/notification/view/notifications_view.dart';
+import 'package:tut/presentation/main/pages/search/view/search_view.dart';
+import 'package:tut/presentation/main/pages/settings/view/settings_view.dart';
 import 'package:tut/presentation/resources/styles/app_colors.dart';
 import 'package:tut/presentation/resources/widgets/public_text.dart';
 
@@ -20,10 +20,10 @@ class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    const HomePage(),
-    const SearchPage(),
-    const NotificationPage(),
-    const SettingsPage(),
+    const HomeView(),
+    const SearchView(),
+    const NotificationView(),
+    const SettingsView(),
   ];
   List<String> titles = [
     AppStrings.home,
@@ -43,13 +43,16 @@ class _MainViewState extends State<MainView> {
           size: 16,
         ),
       ),
-      body: pages[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: pages,
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColors.lightGrey,
-              spreadRadius: 1,
+              color: AppColors.lightOrange,
+              spreadRadius: 0.5,
             ),
           ],
         ),

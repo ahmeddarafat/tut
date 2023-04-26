@@ -14,6 +14,7 @@ class AppRoutes {
   static const String login = "/login";
   static const String register = "/register";
   static const String forgetPassword = "/forgetPassword";
+  static const String storeDetails = "/store details";
 }
 
 class RouteGenerate {
@@ -33,6 +34,7 @@ class RouteGenerate {
         initForgetPasswordModule();
         return MaterialPageRoute(builder: (_) => const ForgetPasswordView());
       case AppRoutes.main:
+        initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());
       default:
         return MaterialPageRoute(builder: (_) => _undfinedPage(route:routeSettings.name));

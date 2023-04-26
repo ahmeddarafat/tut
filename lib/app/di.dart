@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tut/domain/usecase/home_usecase.dart';
+import 'package:tut/presentation/main/pages/home/viewmodel/home_viewmodel.dart';
 import 'app_prefs.dart';
 import '../data/data_source/remote_data_source.dart';
 import '../data/network/app_api.dart';
@@ -80,12 +82,20 @@ void initForgetPasswordModule() {
 void initRegisterModule() {
   // To ensure if loginUseCase instance is initialized, don't initialize it again
   if (!GetIt.I.isRegistered<RegisterUseCase>()) {
-    getIt
-        .registerFactory<RegisterUseCase>(() => RegisterUseCase(getIt<Repository>()));
+    getIt.registerFactory<RegisterUseCase>(
+        () => RegisterUseCase(getIt<Repository>()));
+
     /// login view model
     getIt.registerFactory<RegisterViewModel>(
         () => RegisterViewModel(getIt<RegisterUseCase>()));
-    getIt.registerFactory<ImagePicker>(
-        () => ImagePicker());
+    getIt.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+}
+
+void initHomeModule() {
+  if (!GetIt.I.isRegistered<HomeUseCase>()) {
+    getIt.registerFactory<HomeUseCase>(() => HomeUseCase(getIt<Repository>()));
+    getIt.registerFactory<HomeViewModel>(
+        () => HomeViewModel(getIt<HomeUseCase>()));
   }
 }

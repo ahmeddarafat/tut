@@ -50,4 +50,9 @@ class AppStrings {
   static const String notificataions = "Notifications";
   static const String settings = "Settings";
 
+  /// Home
+  
+  static const String services = "Services";
+  static const String stores = "Stores";
+
 }

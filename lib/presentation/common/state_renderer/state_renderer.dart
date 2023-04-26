@@ -66,9 +66,11 @@ class StateRenderer extends StatelessWidget {
           ),
         );
       case StateRendererType.fullScreenLoadingState:
-        return const RugularItems(
-          message: AppStrings.loading,
-          json: AppJsons.loading,
+        return const Center(
+          child:  RugularItems(
+            message: AppStrings.loading,
+            json: AppJsons.loading,
+          ),
         );
       case StateRendererType.fullScreenErrorState:
         return ErrorItems(

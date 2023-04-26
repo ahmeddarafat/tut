@@ -5,7 +5,7 @@ import '../models/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
-class HomeUseCase implements BaseUseCase<void, HomeModel> {
+class HomeUseCase implements BaseUseCase<dynamic, HomeModel> {
   final Repository _repository;
   HomeUseCase(this._repository);
 
