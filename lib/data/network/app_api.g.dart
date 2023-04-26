@@ -152,7 +152,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/home',
+              '/store_detail/1',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -5,7 +5,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tut/data/data_source/local_data_source.dart';
 import 'package:tut/domain/usecase/home_usecase.dart';
+import 'package:tut/domain/usecase/store_details_usecase.dart';
 import 'package:tut/presentation/main/pages/home/viewmodel/home_viewmodel.dart';
+import 'package:tut/presentation/store_details/viewmodel/store_details_viewmodel.dart';
 import 'app_prefs.dart';
 import '../data/data_source/remote_data_source.dart';
 import '../data/network/app_api.dart';
@@ -104,5 +106,13 @@ void initHomeModule() {
     getIt.registerFactory<HomeUseCase>(() => HomeUseCase(getIt<Repository>()));
     getIt.registerFactory<HomeViewModel>(
         () => HomeViewModel(getIt<HomeUseCase>()));
+  }
+}
+
+void initStoreDetailsModule() {
+  if (!GetIt.I.isRegistered<StoreDetailsUseCase>()) {
+    getIt.registerFactory<StoreDetailsUseCase>(() => StoreDetailsUseCase(getIt<Repository>()));
+    getIt.registerFactory<StoreDetailsViewModel>(
+        () => StoreDetailsViewModel(getIt<StoreDetailsUseCase>()));
   }
 }

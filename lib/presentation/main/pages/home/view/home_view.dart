@@ -173,13 +173,12 @@ class _HomeViewState extends State<HomeView> {
               mainAxisSpacing: 12,
               childAspectRatio: 160/120,
               physics: const BouncingScrollPhysics(),
-              shrinkWrap: true, // TODO: try shrinkWrap BY FALSE
+              shrinkWrap: true, 
               children: List.generate(
                 stores.length,
                 (index) {
                   return InkWell(
                     onTap: (){
-                      // TODO: navigate to store details page
                       Navigator.pushNamed(context, AppRoutes.storeDetails);
                     },
                     child: ClipRRect(

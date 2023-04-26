@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tut/presentation/main/main_view.dart';
+import 'package:tut/presentation/store_details/view/store_details_view.dart';
 import '../../../app/di.dart';
 import '../../forget_passwrod/view/forget_password_view.dart';
 import '../../login/view/login_view.dart';
@@ -36,6 +37,9 @@ class RouteGenerate {
       case AppRoutes.main:
         initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());
+      case AppRoutes.storeDetails:
+        initStoreDetailsModule();
+        return MaterialPageRoute(builder: (_) => const StoreDetailsView());
       default:
         return MaterialPageRoute(builder: (_) => _undfinedPage(route:routeSettings.name));
     }
