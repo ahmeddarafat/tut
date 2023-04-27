@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tut/presentation/resources/constants/app_strings.dart';
 
@@ -11,9 +12,9 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       body: Center(
-        child: Text(AppStrings.search),
+        child: const Text(AppStrings.search).tr(),
       ),
     );
   }

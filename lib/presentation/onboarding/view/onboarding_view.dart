@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../app/app_prefs.dart';
@@ -86,7 +87,7 @@ class _OnBoardingLayoutsState extends State<OnBoardingLayouts> {
               // TODO: edit splash click
               child: TextButton(
                 child: Text(
-                  AppStrings.skip,
+                  AppStrings.skip.tr(),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 onPressed: () {

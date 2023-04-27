@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tut/app/di.dart';
@@ -59,16 +60,16 @@ class _HomeViewState extends State<HomeView> {
         children: [
           _getBanners(),
           SizedBox(height: 20.h),
-          const PublicText(
-            txt: AppStrings.services,
+           PublicText(
+            txt: AppStrings.services.tr(),
             color: AppColors.orange,
             size: 16,
             fw: FontWeight.bold,
           ),
           SizedBox(height: 10.h),
           _getServices(),
-          const PublicText(
-            txt: AppStrings.stores,
+           PublicText(
+            txt: AppStrings.stores.tr(),
             color: AppColors.orange,
             size: 16,
             fw: FontWeight.bold,

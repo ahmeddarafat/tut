@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tut/app/di.dart';
@@ -39,8 +40,8 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const PublicText(
-          txt: AppStrings.details,
+        title:  PublicText(
+          txt: AppStrings.details.tr(),
           color: AppColors.white,
           size: 16,
         ),
@@ -86,8 +87,8 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    const PublicText(
-                      txt: AppStrings.details,
+                     PublicText(
+                      txt: AppStrings.details.tr(),
                       color: AppColors.orange,
                       size: 16,
                       fw: FontWeight.bold,
@@ -101,8 +102,8 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
                       align: TextAlign.start,
                     ),
                     SizedBox(height: 20.h),
-                    const PublicText(
-                      txt: AppStrings.services,
+                     PublicText(
+                      txt: AppStrings.services.tr(),
                       color: AppColors.orange,
                       size: 16,
                       fw: FontWeight.bold,
@@ -116,8 +117,8 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
                       align: TextAlign.start,
                     ),
                     SizedBox(height: 20.h),
-                    const PublicText(
-                      txt: AppStrings.aboutStore,
+                     PublicText(
+                      txt: AppStrings.aboutStore.tr(),
                       color: AppColors.orange,
                       size: 16,
                       fw: FontWeight.bold,

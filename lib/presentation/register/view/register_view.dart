@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -137,13 +138,13 @@ class _RegisterViewState extends State<RegisterView> {
                     stream: _viewModel.isUserNameValidOutput,
                     builder: (context, snapshot) {
                       return PublicTextFormField(
-                        hint: AppStrings.userName,
+                        hint: AppStrings.username.tr(),
                         keyboardtype: TextInputType.text,
                         borderRadius: 12,
                         controller: _userNameController,
                         validator: (_) => snapshot.data ?? true
                             ? null
-                            : AppStrings.userNameError,
+                            : AppStrings.userNameInvalid.tr(),
                       );
                     }),
                 const SizedBox(height: AppSize.s20),
@@ -168,13 +169,13 @@ class _RegisterViewState extends State<RegisterView> {
                           stream: _viewModel.ismobileNumberValidOutput,
                           builder: (context, snapshot) {
                             return PublicTextFormField(
-                              hint: AppStrings.mobileNumber,
+                              hint: AppStrings.mobileNumber.tr(),
                               controller: _mobileNumbercontroller,
                               keyboardtype: TextInputType.number,
                               borderRadius: 12,
                               validator: (_) => snapshot.data ?? true
                                   ? null
-                                  : AppStrings.mobileNumberError,
+                                  : AppStrings.mobileNumberError.tr(),
                             );
                           }),
                     ),
@@ -185,13 +186,13 @@ class _RegisterViewState extends State<RegisterView> {
                     stream: _viewModel.isEmailValidOutput,
                     builder: (context, snapshot) {
                       return PublicTextFormField(
-                        hint: AppStrings.emailAddress,
+                        hint: AppStrings.emailAddress.tr(),
                         controller: _emailController,
                         keyboardtype: TextInputType.emailAddress,
                         borderRadius: 12,
                         validator: (_) => snapshot.data ?? true
                             ? null
-                            : AppStrings.emailAddressError,
+                            : AppStrings.invalidEmail.tr(),
                       );
                     }),
                 const SizedBox(height: AppSize.s20),
@@ -199,7 +200,7 @@ class _RegisterViewState extends State<RegisterView> {
                     stream: _viewModel.isPasswordValidOutput,
                     builder: (context, snapshot) {
                       return PublicTextFormField(
-                        hint: AppStrings.password,
+                        hint: AppStrings.password.tr(),
                         controller: _passwordController,
                         keyboardtype: TextInputType.visiblePassword,
                         isPassword: true,
@@ -207,7 +208,7 @@ class _RegisterViewState extends State<RegisterView> {
                         borderRadius: 12,
                         validator: (_) => snapshot.data ?? true
                             ? null
-                            : AppStrings.passwordError,
+                            : AppStrings.passwordError.tr(),
                       );
                     }),
                 const SizedBox(height: AppSize.s20),
@@ -230,7 +231,7 @@ class _RegisterViewState extends State<RegisterView> {
                   stream: _viewModel.areAllInputsValidOutput,
                   builder: (context, snapshot) {
                     return PublicButton(
-                      title: AppStrings.register,
+                      title: AppStrings.register.tr(),
                       onPressed: (snapshot.data ?? false)
                           ? () {
                               _viewModel.register();
@@ -244,8 +245,8 @@ class _RegisterViewState extends State<RegisterView> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const PublicText(
-                    txt: AppStrings.alreadyHaveEmail,
+                  child:  PublicText(
+                    txt: AppStrings.alreadyHaveEmail.tr(),
                     color: AppColors.orange,
                     size: 14,
                   ),
@@ -266,7 +267,7 @@ class _RegisterViewState extends State<RegisterView> {
           child: Wrap(
             children: [
               ListTile(
-                  title: const Text(AppStrings.camera),
+                  title: const Text(AppStrings.camera).tr(),
                   leading: const Icon(
                     Icons.camera_alt_outlined,
                     color: AppColors.orange,
@@ -280,7 +281,7 @@ class _RegisterViewState extends State<RegisterView> {
                     Navigator.pop(context);
                   },),
               ListTile(
-                  title: const Text(AppStrings.gallery),
+                  title: const Text(AppStrings.gallery).tr(),
                   leading: const Icon(
                     Icons.image_outlined,
                     color: AppColors.orange,
@@ -324,10 +325,10 @@ class MediaWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Flexible(
+         Flexible(
           flex: 2,
-          child: PublicText(
-            txt: AppStrings.profilePicture,
+          child:  PublicText(
+            txt: AppStrings.profilePicture.tr(),
             color: AppColors.grey,
             size: 16,
             fw: FontWeight.w500,

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,13 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                       stream: _viewModel.isUserNameValidOutput,
                       builder: (context, snapshot) {
                         return PublicTextFormField(
-                          hint: AppStrings.userName,
+                          hint: AppStrings.username.tr(),
                           keyboardtype: TextInputType.emailAddress,
                           borderRadius: 12,
                           controller: _userNameController,
                           validator: (_) => snapshot.data ?? true
                               ? null
-                              : AppStrings.userNameError,
+                              : AppStrings.usernameError.tr(),
                         );
                       }),
                   const SizedBox(
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                       stream: _viewModel.isPasswordValidOutput,
                       builder: (context, snapshot) {
                         return PublicTextFormField(
-                          hint: AppStrings.password,
+                          hint: AppStrings.password.tr(),
                           controller: _passwordController,
                           keyboardtype: TextInputType.visiblePassword,
                           isPassword: true,
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: 12,
                           validator: (_) => snapshot.data ?? true
                               ? null
-                              : AppStrings.passwordError,
+                              : AppStrings.passwordError.tr(),
                         );
                       }),
                   const SizedBox(height: AppSize.s20),
@@ -144,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context, snapshot) {
                       log(snapshot.data.toString());
                       return PublicButton(
-                        title: AppStrings.login,
+                        title: AppStrings.login.tr(),
                         onPressed: (snapshot.data ?? false)
                             ? () {
                                 _viewModel.login();
@@ -162,8 +163,8 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushNamed(
                               context, AppRoutes.forgetPassword);
                         },
-                        child: const PublicText(
-                          txt: AppStrings.forgetPassword,
+                        child:  PublicText(
+                          txt: AppStrings.forgetPassword.tr(),
                           color: AppColors.orange,
                           size: 14,
                         ),
@@ -172,8 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.register);
                         },
-                        child: const PublicText(
-                          txt: AppStrings.notMemeberSignUp,
+                        child:  PublicText(
+                          txt: AppStrings.notMemeberSignUp.tr(),
                           color: AppColors.orange,
                           size: 14,
                         ),

@@ -1,5 +1,11 @@
+import 'package:flutter/material.dart';
+
 const String arabic = "ar";
 const String english = "en";
+const String assetPathLocalizatios = "assets/translations";
+
+const Locale arabicLocale = Locale("ar","SA");
+const Locale englishLocale = Locale("en","US");
 
 enum AppLanguages { arabic, english }
 

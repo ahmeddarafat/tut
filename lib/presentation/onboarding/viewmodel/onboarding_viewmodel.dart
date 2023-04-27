@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../../domain/models/models.dart';
 import '../../base/base_view_model.dart';
 
@@ -63,29 +65,29 @@ class OnBoardingViewModel extends BaseViewModel
 
   List<SliderObject> _getSliderContent() => [
         SliderObject(
-          AppStrings.onBoardingTitle1,
-          AppStrings.onBoardingSubtitle1,
+          AppStrings.onBoardingTitle1.tr(),
+          AppStrings.onBoardingSubtitle1.tr(),
           AppImages.onBoardingLogo1,
           AppSize.s267,
           AppSize.s267,
         ),
         SliderObject(
-          AppStrings.onBoardingTitle2,
-          AppStrings.onBoardingSubtitle2,
+          AppStrings.onBoardingTitle2.tr(),
+          AppStrings.onBoardingSubtitle2.tr(),
           AppImages.onBoardingLogo2,
           AppSize.s326,
           AppSize.s326,
         ),
         SliderObject(
-          AppStrings.onBoardingTitle3,
-          AppStrings.onBoardingSubtitle3,
+          AppStrings.onBoardingTitle3.tr(),
+          AppStrings.onBoardingSubtitle3.tr(),
           AppImages.onBoardingLogo3,
           AppSize.s287,
           AppSize.s287,
         ),
         SliderObject(
-          AppStrings.onBoardingTitle4,
-          AppStrings.onBoardingSubtitle4,
+          AppStrings.onBoardingTitle4.tr(),
+          AppStrings.onBoardingSubtitle4.tr(),
           AppImages.onBoardingLogo4,
           AppSize.s356,
           AppSize.s356,

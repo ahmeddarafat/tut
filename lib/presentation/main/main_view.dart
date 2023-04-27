@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tut/presentation/main/pages/home/view/home_view.dart';
 import 'package:tut/presentation/main/pages/notification/view/notifications_view.dart';
@@ -16,7 +17,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  String title = AppStrings.home;
+  String title = AppStrings.home.tr();
   int _currentIndex = 0;
 
   List<Widget> pages = [
@@ -26,10 +27,10 @@ class _MainViewState extends State<MainView> {
     const SettingsView(),
   ];
   List<String> titles = [
-    AppStrings.home,
-    AppStrings.search,
-    AppStrings.notificataions,
-    AppStrings.settings,
+    AppStrings.home.tr(),
+    AppStrings.search.tr(),
+    AppStrings.notifications.tr(),
+    AppStrings.settings.tr(),
   ];
 
   @override

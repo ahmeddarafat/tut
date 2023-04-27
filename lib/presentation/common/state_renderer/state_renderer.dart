@@ -1,4 +1,5 @@
 // To show the states of views while changing (loaing, error, data, etc..)
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tut/presentation/resources/constants/app_assets.dart';
@@ -44,10 +45,10 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget() {
     switch (stateRendererType) {
       case StateRendererType.popUpLoadingState:
-        return const PopDialog(
+        return  PopDialog(
           item: RugularItems(
             mainAxisSize: MainAxisSize.min,
-            message: AppStrings.loading,
+            message: AppStrings.loading.tr(),
             json: AppJsons.loading,
           ),
         );
@@ -66,9 +67,9 @@ class StateRenderer extends StatelessWidget {
           ),
         );
       case StateRendererType.fullScreenLoadingState:
-        return const Center(
+        return  Center(
           child:  RugularItems(
-            message: AppStrings.loading,
+            message: AppStrings.loading.tr(),
             json: AppJsons.loading,
           ),
         );
@@ -79,9 +80,9 @@ class StateRenderer extends StatelessWidget {
           retryActionFunction: retryActionFunction,
         );
       case StateRendererType.fullScreenEmptyState:
-        return const RugularItems(
+        return  RugularItems(
           mainAxisSize: MainAxisSize.min,
-          message: AppStrings.loading,
+          message: AppStrings.loading.tr(),
           json: AppJsons.empty,
         );
       case StateRendererType.contentState:
@@ -162,8 +163,8 @@ class ErrorItems extends StatelessWidget {
               }
             },
             title: type == StateRendererType.fullScreenErrorState
-                ? AppStrings.tryAgain
-                : AppStrings.ok,
+                ? AppStrings.retryAgain.tr()
+                : AppStrings.ok.tr(),
           )
         ],
       ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../resources/widgets/public_text.dart';
@@ -94,13 +95,13 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       stream: _viewModel.isEmailValidOutput,
                       builder: (context, snapshot) {
                         return PublicTextFormField(
-                          hint: AppStrings.emailAddress,
+                          hint: AppStrings.emailAddress.tr(),
                           keyboardtype: TextInputType.emailAddress,
                           borderRadius: 12,
                           controller: _emailController,
                           validator: (_) => snapshot.data ?? true
                               ? null
-                              : AppStrings.emailAddressError,
+                              : AppStrings.invalidEmail.tr(),
                         );
                       }),
                   const SizedBox(height: AppSize.s20),
@@ -109,7 +110,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     builder: (context, snapshot) {
                       log(snapshot.data.toString());
                       return PublicButton(
-                        title: AppStrings.forgetPassword,
+                        title: AppStrings.forgetPassword.tr(),
                         onPressed: (snapshot.data ?? false)
                             ? () {
                                 _viewModel.forgetPassword();
@@ -121,15 +122,15 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   const SizedBox(height: AppSize.s20),
                   Row(
                     children: [
-                      const PublicText(
-                        txt: AppStrings.didNotReceiveEmail,
+                       PublicText(
+                        txt: AppStrings.didNotReceiveEmail.tr(),
                         color: AppColors.black,
                         size: 14,
                       ),
                       InkWell(
                         onTap: () {},
-                        child: const PublicText(
-                          txt: AppStrings.resend,
+                        child:  PublicText(
+                          txt: AppStrings.resend.tr(),
                           color: AppColors.orange,
                           size: 14,
                         ),
